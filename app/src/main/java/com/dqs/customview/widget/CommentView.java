@@ -26,6 +26,8 @@ import com.dqs.customview.R;
 public class CommentView extends LinearLayout implements Animator.AnimatorListener {
     private static final String TAG = "CommentView";
 
+    private OnClickComment onClickComment;
+
     public CommentView(Context context) {
         this(context, null);
     }
@@ -67,6 +69,11 @@ public class CommentView extends LinearLayout implements Animator.AnimatorListen
     private String defaluteShadow = "#7F484848";
 
     /***********************对外方法***************************/
+
+    public void setOnClickComment(@Nullable OnClickComment onClickComment) {
+        this.onClickComment = onClickComment;
+    }
+
     public void setNum(int like, int dislike) {
         //设置百分比
         float count = like + dislike;
@@ -102,7 +109,10 @@ public class CommentView extends LinearLayout implements Animator.AnimatorListen
         disText.setText(disLike + "%");
         invalidateView();
     }
-    /**————————————————————————————————————————————————————————**/
+
+    /**
+     * ————————————————————————————————————————————————————————
+     **/
 
 
     private void init() {
@@ -285,9 +295,11 @@ public class CommentView extends LinearLayout implements Animator.AnimatorListen
         if (type == 0) {
             animLike.start();
             objectY(imageLike);
+            onClickComment.onClickLike(defaultLike+"成功");
         } else {
             animDis.start();
             objectX(imageDis);
+            onClickComment.onClickDis(defalutDis+"成功");
         }
 
     }
@@ -327,6 +339,13 @@ public class CommentView extends LinearLayout implements Animator.AnimatorListen
 
     @Override
     public void onAnimationRepeat(Animator animation) {
+
+    }
+
+    public interface OnClickComment {
+        void onClickLike(String Like);
+
+        void onClickDis(String Dis);
 
     }
 }
